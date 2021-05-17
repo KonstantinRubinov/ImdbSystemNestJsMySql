@@ -1,4 +1,5 @@
-import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete, Req } from '@nestjs/common';
+import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete, Req, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'guards/jwtAuthGuard';
 import { MovieExtendService } from './movie-extend.service';
 
 @Controller('api/movies')
@@ -6,6 +7,7 @@ export class MovieExtendController {
 
   constructor(private readonly movieExtendService: MovieExtendService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async GetAllMovies(@Req() request, @Response() res: any) {
     try {
@@ -18,6 +20,7 @@ export class MovieExtendController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('favoriteId/:imdbID')
   async GetById(@Req() request, @Param('imdbID') imdbID: string, @Response() res: any) {
     try {
@@ -30,7 +33,8 @@ export class MovieExtendController {
     }
   }
 
-  @Get('favoriteId/:byWord')
+  @UseGuards(JwtAuthGuard)
+  @Get('favoriteWord/:byWord')
   async GetByWord(@Req() request, @Param('byWord') byWord: string, @Response() res: any) {
     try {
       const userID = request.payload.user.userID;
@@ -42,7 +46,8 @@ export class MovieExtendController {
     }
   }
   
-  @Get('favoriteId/:title')
+  @UseGuards(JwtAuthGuard)
+  @Get('favoriteTitle/:title')
   async GetByTitle(@Req() request, @Param('title') title: string, @Response() res: any) {
     try {
       const userID = request.payload.user.userID;
@@ -54,6 +59,7 @@ export class MovieExtendController {
     }
   }
   
+  @UseGuards(JwtAuthGuard)
   @Post()
   async AddMovie(@Req() request, @Body() body: any, @Response() res: any) {
     try {
@@ -69,6 +75,7 @@ export class MovieExtendController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':imdbID')
   async UpdateUser(@Req() request, @Param('imdbID') imdbID: string, @Body() body: any, @Response() res: any) {
     try {
@@ -82,6 +89,7 @@ export class MovieExtendController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':imdbID')
   async DeleteUser(@Req() request, @Param('imdbID') imdbID: string, @Response() res: any) {
     try {

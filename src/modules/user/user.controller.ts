@@ -1,11 +1,13 @@
-import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete } from '@nestjs/common';
+import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'guards/jwtAuthGuard';
 import { UserService } from './user.service';
 
-@Controller('api/user')
+@Controller('api/users')
 export class UserController {
 
   constructor(private readonly userService: UserService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async GetAllUsers(@Response() res: any) {
     try {
@@ -17,6 +19,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':userID')
   async GetOneUser(@Param('userID') userID: string, @Response() res: any) {
     try {
@@ -28,6 +31,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('check')
   async ReturnUserByNamePassword(@Body() body: any, @Response() res: any) {
     try {
@@ -42,6 +46,7 @@ export class UserController {
     }
   }
   
+  @UseGuards(JwtAuthGuard)
   @Post()
   async AddUser(@Body() body: any, @Response() res: any) {
     try {
@@ -56,6 +61,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':userID')
   async UpdateUser(@Param('userID') userID: string, @Body() body: any, @Response() res: any) {
     try {
@@ -67,6 +73,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':userID')
   async DeleteUser(@Param('userID') userID: string, @Response() res: any) {
     try {
@@ -78,6 +85,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete()
   async DeleteUsers(@Response() res: any) {
     try {

@@ -20,6 +20,6 @@ import { LoginController } from './login.controller';
   
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [LoginController],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
