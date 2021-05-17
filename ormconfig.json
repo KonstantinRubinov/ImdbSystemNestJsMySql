@@ -1,0 +1,10 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3307,
+    "username": "root",
+    "password": "Rk14101981",
+    "database": "imdbfavorites",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "synchronize": true
+}
