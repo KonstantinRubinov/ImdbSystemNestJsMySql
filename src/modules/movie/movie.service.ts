@@ -59,10 +59,10 @@ export class MovieService {
         const movie = new Movie(body.imdbID, body.title, body.poster, userID, body.year);
         return await this.em.createQueryBuilder(Movie, 'movie')
         .insert()
-        .select('*')
-        .where("imdbID = :imdbID", { imdbID: body.imdbID })
-        .andWhere("userID = :userID", { userID: userID })
-        .getOne();
+        .execute()
+        .then((response) => {
+          return response.raw[0];
+        });
       } catch (error) {
         throw Error(error);
       }
@@ -74,10 +74,10 @@ export class MovieService {
           .update(body)
           .where("imdbID = :imdbID", { imdbID: body.imdbID })
           .andWhere("userID = :userID", { userID: userID })
-          .select('*')
-          .where("imdbID = :imdbID", { imdbID: body.imdbID })
-          .andWhere("userID = :userID", { userID: userID })
-          .getOne();
+          .execute()
+          .then((response) => {
+            return response.raw[0];
+          });
           return movie;
       } catch (error) {
           throw Error(error);

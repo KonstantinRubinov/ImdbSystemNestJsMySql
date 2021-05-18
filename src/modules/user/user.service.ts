@@ -122,7 +122,10 @@ export class UserService {
       .insert()
       .into(User)
       .values(user)
-      .execute();
+      .execute()
+      .then((response) => {
+        return response.raw[0];
+      });
       return addedUser;
     });
   };
@@ -134,7 +137,10 @@ export class UserService {
       .update(User)
       .set(user)
       .where("userID = :userID", { userID: userID })
-      .execute();
+      .execute()
+      .then((response) => {
+        return response.raw[0];
+      });
       return updatedUser;
     } catch (error) {
         throw Error(error);
