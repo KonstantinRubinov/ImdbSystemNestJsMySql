@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'entities/User';
+import { User } from '../../entities/User';
 import { EntityManager } from 'typeorm';
-const movieService = require("../movie/movie.service");
-const movieextendService = require("../movieextend/movie-extend.service");
+import { MovieService } from '../movie/movie.service';
+import { MovieExtendService } from '../movieextend/movie-extend.service';
 const bcrypt = require("bcrypt");
 var fs = require('fs');
 
 @Injectable()
 export class UserService {
-    constructor(private readonly em: EntityManager) { }
+    constructor(private readonly movieService: MovieService,
+      private readonly movieExtendService: MovieExtendService,
+      private readonly em: EntityManager) { }
 
     private isValidIsraeliID(id) {
       id = String(id).trim();
@@ -146,9 +148,13 @@ export class UserService {
       .from(User)
       .where("userID = :userID", { userID: userID })
       .execute();
-      deletedUser.affected = deletedUser.affected + movieService.DeleteMoviesByUser(userID);
-      deletedUser.affected = deletedUser.affected + movieextendService.DeleteMoviesByUser(userID);
-      return deletedUser.affected;
+      let affected=0;
+      if (deletedUser.affected!=undefined && deletedUser.affected!=null){
+        affected=deletedUser.affected;
+      }
+      affected = affected + await this.movieService.DeleteMoviesByUser(userID);
+      affected = affected + await this.movieExtendService.DeleteMoviesByUser(userID);
+      return affected;
     } catch (error) {
         throw Error(error);
     }
@@ -160,9 +166,13 @@ export class UserService {
       .delete()
       .from(User)
       .execute();
-      deletedUser.affected = deletedUser.affected + movieService.DeleteMovies();
-      deletedUser.affected = deletedUser.affected + movieextendService.DeleteMovies();
-      return deletedUser.affected;
+      let affected=0;
+      if (deletedUser.affected!=undefined && deletedUser.affected!=null){
+        affected=deletedUser.affected;
+      }
+      affected = affected + await this.movieService.DeleteMovies();
+      affected = affected + await this.movieExtendService.DeleteMovies();
+      return affected;
     } catch (error) {
         throw Error(error);
     }

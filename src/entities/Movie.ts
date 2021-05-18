@@ -24,6 +24,14 @@ export class Movie {
 
   @ManyToOne(() => User)
   user?: User;
+
+  public toString(): string {
+    return 'imdbID:' + this.imdbID +
+           ' userID:' + this.userID +
+           ' title:' + this.title +
+           ' poster:' + this.poster +
+           ' year:' + this.year;
+  }
     
   constructor(tmpImdbID: string, tmpTitle: string, tmpPoster: string, tmpUserID: string, tmpYear: number) {
     this.imdbID = tmpImdbID;

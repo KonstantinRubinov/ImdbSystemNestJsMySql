@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movie } from 'entities/Movie';
+import { Movie } from '../../entities/Movie';
 import { EntityManager } from 'typeorm';
 
 
@@ -92,7 +92,44 @@ export class MovieService {
         .where("imdbID = :imdbID", { imdbID: imdbID })
         .andWhere("userID = :userID", { userID: userID })
         .execute();
-        return deletedMovie.affected;
+        let affected=0;
+        if (deletedMovie.affected!=undefined && deletedMovie.affected!=null){
+          affected=deletedMovie.affected;
+        }
+        return affected;
+      } catch (error) {
+        throw Error(error);
+      }
+    }
+
+    async DeleteMoviesByUser(userID){
+      try {
+        let deletedMovie = await this.em.createQueryBuilder(Movie, 'movie')
+        .delete()
+        .from(Movie)
+        .andWhere("userID = :userID", { userID: userID })
+        .execute();
+        let affected=0;
+        if (deletedMovie.affected!=undefined && deletedMovie.affected!=null){
+          affected=deletedMovie.affected;
+        }
+        return affected;
+      } catch (error) {
+        throw Error(error);
+      }
+    }
+
+    async DeleteMovies(){
+      try {
+        let deletedMovie = await this.em.createQueryBuilder(Movie, 'movie')
+        .delete()
+        .from(Movie)
+        .execute();
+        let affected=0;
+        if (deletedMovie.affected!=undefined && deletedMovie.affected!=null){
+          affected=deletedMovie.affected;
+        }
+        return affected;
       } catch (error) {
         throw Error(error);
       }
