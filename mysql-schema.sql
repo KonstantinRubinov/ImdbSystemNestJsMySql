@@ -20,7 +20,7 @@ CREATE TABLE `Users` (
 	`userBirthDate` DATETIME NULL,
 	`userGender` NVARCHAR(50) NOT NULL,
 	`userEmail` NVARCHAR(50) NOT NULL,
-	`userPassword` NVARCHAR(50) NOT NULL,
+	`userPassword` NVARCHAR(60) NOT NULL,
 	`userPicture` NVARCHAR(50) NULL,
 	`userImdbPass` NVARCHAR(50) NULL,
   	PRIMARY KEY ( `userID` )
