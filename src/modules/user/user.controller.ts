@@ -1,4 +1,5 @@
 import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete, UseGuards } from '@nestjs/common';
+import { UserDto } from 'entities-for-validation/UserDto';
 import { JwtAuthGuard } from 'guards/jwtAuthGuard';
 import { UserService } from './user.service';
 
@@ -33,7 +34,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Post('check')
-  async ReturnUserByNamePassword(@Body() body: any, @Response() res: any) {
+  async ReturnUserByNamePassword(@Body() body: UserDto, @Response() res: any) {
     try {
       if (!body.userNickName || !body.userPassword) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "One of data is missing" });
@@ -48,9 +49,9 @@ export class UserController {
   
   @UseGuards(JwtAuthGuard)
   @Post()
-  async AddUser(@Body() body: any, @Response() res: any) {
+  async AddUser(@Body() body: UserDto, @Response() res: any) {
     try {
-      if (!body.kidId || !body.kidName || !body.kidBirthdate) {
+      if (!body) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "One of data is missing" });
       }
       let user =  await this.userService.AddUser(body);
@@ -63,7 +64,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':userID')
-  async UpdateUser(@Param('userID') userID: string, @Body() body: any, @Response() res: any) {
+  async UpdateUser(@Param('userID') userID: string, @Body() body: UserDto, @Response() res: any) {
     try {
       let user =  await this.userService.UpdateUser(body, userID);
       return res.status(HttpStatus.OK).json(user);

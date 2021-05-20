@@ -1,4 +1,5 @@
 import { Response, Get, Controller, Post, Put, HttpStatus, Param, Body, Delete, Req, UseGuards } from '@nestjs/common';
+import { MovieExtendDto } from 'entities-for-validation/MovieExtendDto';
 import { JwtAuthGuard } from 'guards/jwtAuthGuard';
 import { MovieExtendService } from './movie-extend.service';
 
@@ -61,7 +62,7 @@ export class MovieExtendController {
   
   @UseGuards(JwtAuthGuard)
   @Post()
-  async AddMovie(@Req() request, @Body() body: any, @Response() res: any) {
+  async AddMovie(@Req() request, @Body() body: MovieExtendDto, @Response() res: any) {
     try {
       if (!body) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: "One of data is missing" });
@@ -77,7 +78,7 @@ export class MovieExtendController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':imdbID')
-  async UpdateUser(@Req() request, @Param('imdbID') imdbID: string, @Body() body: any, @Response() res: any) {
+  async UpdateUser(@Req() request, @Param('imdbID') imdbID: string, @Body() body: MovieExtendDto, @Response() res: any) {
     try {
       const userID = request.payload.user.userID;
       body.imdbID=imdbID;

@@ -1,4 +1,5 @@
 import { Response, Controller, Post, HttpStatus, Body, UseGuards } from '@nestjs/common';
+import { UserDto } from 'entities-for-validation/UserDto';
 import { LocalAuthGuard } from 'guards/LocalAuthGuard';
 import { AuthService } from 'modules/auth/auth.service';
 
@@ -8,7 +9,7 @@ export class LoginController {
     
     @UseGuards(LocalAuthGuard)
     @Post('token')
-    async login(@Body() body: any, @Response() res: any) {
+    async login(@Body() body: UserDto, @Response() res: any) {
         try {
             if (!body.userNickName || !body.userPassword) {
               return res.status(HttpStatus.BAD_REQUEST).json({ message: "One of data is missing" });
